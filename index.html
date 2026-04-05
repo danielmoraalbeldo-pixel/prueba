@@ -38,42 +38,42 @@
         // 1. CONFIGURA TUS CREDENCIALES AQUÍ
         const SUPABASE_URL = 'https://bwctjmnjmllibfvelutj.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_HdsC1e2TCfxkDsLsYstSeg_xfSDUCrF';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // CORRECCIÓN AQUÍ: Cambiamos el nombre de la variable para que no choque
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // Función para registrar nuevos usuarios
         async function signUp() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const { data, error } = await supabase.auth.signUp({ email, password });
+            const { data, error } = await _supabase.auth.signUp({ email, password });
             if (error) alert("Error: " + error.message);
-            else alert("¡Revisa tu email para confirmar tu cuenta!");
+            else alert("¡Registro iniciado! Si no desactivaste 'Confirm Email' en Supabase, revisa tu correo.");
         }
 
         // Función para entrar
         async function signIn() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
             if (error) alert("Error: " + error.message);
-            else showUser(data.user);
+            else if (data.user) showUser(data.user);
         }
 
         // Función para salir
         async function signOut() {
-            await supabase.auth.signOut();
-            location.reload(); // Recarga la página para limpiar el estado
+            await _supabase.auth.signOut();
+            location.reload(); 
         }
 
-        // Mostrar el panel de bienvenida
         function showUser(user) {
             document.getElementById('login-form').classList.add('hidden');
             document.getElementById('user-info').classList.remove('hidden');
             document.getElementById('user-email').innerText = "Has entrado como: " + user.email;
         }
 
-        // Verificar si ya hay una sesión activa al cargar la página
         async function checkSession() {
-            const { data: { session } } = await supabase.auth.getSession();
+            const { data: { session } } = await _supabase.auth.getSession();
             if (session) showUser(session.user);
         }
         checkSession();
