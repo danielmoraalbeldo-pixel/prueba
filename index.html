@@ -3,55 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Web con Login Gratis</title>
+    <title>Acceso Premium | Mi Web</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #3ecf8e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #36b47c; }
+        /* Estilos Modernos */
+        :root {
+            --primary: #3ecf8e;
+            --secondary: #3498db;
+            --danger: #e74c3c;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Fondo animado dinámico */
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card { 
+            background: var(--glass);
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); 
+            width: 350px; 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border: 2px solid #eee; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--secondary);
+        }
+
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 10px;
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-signup { background: var(--primary); }
+        .btn-signup:hover { background: #36b47c; transform: scale(1.02); }
+
+        .btn-signin { background: var(--secondary); }
+        .btn-signin:hover { background: #2980b9; transform: scale(1.02); }
+
+        .btn-logout { background: var(--danger); margin-top: 20px; }
+
+        .separator {
+            text-align: center;
+            margin: 15px 0;
+            color: #888;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
         .hidden { display: none; }
         #user-info { text-align: center; }
+        
+        #user-email {
+            font-weight: bold;
+            color: #555;
+            word-break: break-all;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="card">
         <div id="login-form">
-            <h2>Iniciar Sesión</h2>
-            <input type="email" id="email" placeholder="Tu email">
-            <input type="password" id="password" placeholder="Tu contraseña">
-            <button onclick="signUp()">Registrarse</button>
-            <p style="text-align: center; font-size: 0.8rem;">O</p>
-            <button onclick="signIn()" style="background: #3498db;">Entrar</button>
+            <h2>Bienvenido</h2>
+            <input type="email" id="email" placeholder="Correo electrónico">
+            <input type="password" id="password" placeholder="Contraseña">
+            
+            <button class="btn-signup" onclick="signUp()">Crear Cuenta</button>
+            
+            <div class="separator">ó</div>
+            
+            <button class="btn-signin" onclick="signIn()">Entrar</button>
         </div>
 
         <div id="user-info" class="hidden">
-            <h2>¡Bienvenido!</h2>
+            <h2>¡Hola de nuevo!</h2>
             <p id="user-email"></p>
-            <button onclick="signOut()" style="background: #e74c3c;">Cerrar Sesión</button>
+            <button class="btn-logout" onclick="signOut()">Cerrar Sesión</button>
         </div>
     </div>
 
     <script>
-        // 1. CONFIGURA TUS CREDENCIALES AQUÍ
+        // TU CONFIGURACIÓN (Mantenida igual)
         const SUPABASE_URL = 'https://bwctjmnjmllibfvelutj.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_HdsC1e2TCfxkDsLsYstSeg_xfSDUCrF';
         
-        // CORRECCIÓN AQUÍ: Cambiamos el nombre de la variable para que no choque
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Función para registrar nuevos usuarios
         async function signUp() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            if(!email || !password) return alert("Rellena los campos");
+
             const { data, error } = await _supabase.auth.signUp({ email, password });
             if (error) alert("Error: " + error.message);
-            else alert("¡Registro iniciado! Si no desactivaste 'Confirm Email' en Supabase, revisa tu correo.");
+            else alert("¡Registro iniciado! Revisa tu correo para confirmar.");
         }
 
-        // Función para entrar
         async function signIn() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -60,7 +159,6 @@
             else if (data.user) showUser(data.user);
         }
 
-        // Función para salir
         async function signOut() {
             await _supabase.auth.signOut();
             location.reload(); 
@@ -69,7 +167,7 @@
         function showUser(user) {
             document.getElementById('login-form').classList.add('hidden');
             document.getElementById('user-info').classList.remove('hidden');
-            document.getElementById('user-email').innerText = "Has entrado como: " + user.email;
+            document.getElementById('user-email').innerText = user.email;
         }
 
         async function checkSession() {
