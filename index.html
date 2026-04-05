@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Web con Login Gratis</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #3ecf8e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #36b47c; }
+        .hidden { display: none; }
+        #user-info { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="login-form">
+            <h2>Iniciar Sesión</h2>
+            <input type="email" id="email" placeholder="Tu email">
+            <input type="password" id="password" placeholder="Tu contraseña">
+            <button onclick="signUp()">Registrarse</button>
+            <p style="text-align: center; font-size: 0.8rem;">O</p>
+            <button onclick="signIn()" style="background: #3498db;">Entrar</button>
+        </div>
+
+        <div id="user-info" class="hidden">
+            <h2>¡Bienvenido!</h2>
+            <p id="user-email"></p>
+            <button onclick="signOut()" style="background: #e74c3c;">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. CONFIGURA TUS CREDENCIALES AQUÍ
+        const SUPABASE_URL = 'TU_URL_DE_SUPABASE';
+        const SUPABASE_KEY = 'TU_ANON_KEY_DE_SUPABASE';
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Función para registrar nuevos usuarios
+        async function signUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { data, error } = await supabase.auth.signUp({ email, password });
+            if (error) alert("Error: " + error.message);
+            else alert("¡Revisa tu email para confirmar tu cuenta!");
+        }
+
+        // Función para entrar
+        async function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) alert("Error: " + error.message);
+            else showUser(data.user);
+        }
+
+        // Función para salir
+        async function signOut() {
+            await supabase.auth.signOut();
+            location.reload(); // Recarga la página para limpiar el estado
+        }
+
+        // Mostrar el panel de bienvenida
+        function showUser(user) {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('user-info').classList.remove('hidden');
+            document.getElementById('user-email').innerText = "Has entrado como: " + user.email;
+        }
+
+        // Verificar si ya hay una sesión activa al cargar la página
+        async function checkSession() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) showUser(session.user);
+        }
+        checkSession();
+    </script>
+</body>
+</html>
