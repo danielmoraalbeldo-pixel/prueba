@@ -1,200 +1,340 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fontanería Express - Servicios Profesionales</title>
-    <style>
-        /* Estilos CSS - Para darle diseño a la página */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        /* Encabezado y Navegación */
-        header {
-            background-color: #0056b3; /* Azul profesional */
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-        }
-
-        nav ul {
-            margin: 10px 0 0;
-            padding: 0;
-            list-style: none;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
-        /* Sección Hero (Principal con imagen o llamada a la acción) */
-        .hero {
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .hero h2 {
-            font-size: 2em;
-            margin-bottom: 15px;
-        }
-
-        .hero p {
-            font-size: 1.2em;
-            margin-bottom: 25px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background-color: #ffc107; /* Amarillo para llamar la atención */
-            color: #333;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            font-size: 1.2em;
-        }
-
-        .cta-button:hover {
-            background-color: #e0a800;
-        }
-
-        /* Contenedor Principal */
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 40px 0;
-        }
-
-        /* Sección de Servicios */
-        .servicios {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .servicio-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .servicio-item h3 {
-            color: #0056b3;
-        }
-
-        /* Sección de Contacto */
-        .contacto {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-top: 40px;
-        }
-
-        .contacto h2 {
-            text-align: center;
-            color: #0056b3;
-        }
-
-        /* Pie de página */
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
-        }
-
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPA Histórico — Iberdrola · Endesa · Naturgy (2010–2025)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f1623; color: #e2e8f0; padding: 24px 20px; min-height: 100vh; }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 18px; font-weight: 700; color: #f1f5f9; text-align: center; margin-bottom: 4px; }
+  .subtitle { font-size: 12px; color: #94a3b8; text-align: center; margin-bottom: 18px; }
+  .controls { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .btn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 5px 14px; border-radius: 5px; cursor: pointer; font-size: 12px; transition: all .15s; }
+  .btn:hover { border-color: #64748b; color: #e2e8f0; }
+  .btn.active { background: #1d4ed8; border-color: #3b82f6; color: #fff; font-weight: 600; }
+  .legend { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 14px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; cursor: pointer; user-select: none; padding: 4px 8px; border-radius: 4px; transition: background .15s; }
+  .legend-item:hover { background: #1e293b; }
+  .legend-line { width: 24px; height: 3px; border-radius: 2px; }
+  .chart-wrap { background: #131e2e; border: 1px solid #1e293b; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  canvas { width: 100% !important; }
+  .table-wrap { background: #131e2e; border: 1px solid #1e293b; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead th { background: #1a2744; color: #94a3b8; font-weight: 700; padding: 10px 12px; text-align: center; border-bottom: 2px solid #334155; letter-spacing: 0.3px; font-size: 11px; text-transform: uppercase; }
+  thead th:first-child { text-align: left; }
+  tbody tr:nth-child(even) { background: #0f1926; }
+  tbody tr:hover { background: #1a2e4a; }
+  tbody td { padding: 8px 12px; text-align: center; border-bottom: 1px solid #1e293b; font-variant-numeric: tabular-nums; }
+  tbody td:first-child { text-align: left; font-weight: 700; color: #64748b; font-size: 13px; }
+  .ibe { color: #38bdf8; font-weight: 700; font-size: 13px; }
+  .end { color: #fb923c; font-weight: 700; font-size: 13px; }
+  .nat { color: #4ade80; font-weight: 700; font-size: 13px; }
+  .neg { color: #f87171 !important; }
+  .ev-cell { font-size: 10.5px; color: #64748b; text-align: left; }
+  .star { display: inline-block; background: #1e3a5f; color: #93c5fd; padding: 1px 5px; border-radius: 3px; font-size: 9px; font-weight: 700; margin-left: 4px; vertical-align: middle; }
+  .note { font-size: 10.5px; color: #475569; text-align: center; line-height: 1.6; padding: 12px; background: #0c1520; border-radius: 8px; }
+  .note strong { color: #64748b; }
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+  .kpi { background: #131e2e; border: 1px solid #1e293b; border-radius: 8px; padding: 14px; text-align: center; }
+  .kpi-label { font-size: 10px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .kpi-val { font-size: 20px; font-weight: 800; margin-bottom: 2px; }
+  .kpi-sub { font-size: 10px; color: #64748b; }
+  .kpi-iberia .kpi-val { color: #38bdf8; }
+  .kpi-endesa .kpi-val { color: #fb923c; }
+  .kpi-naturgy .kpi-val { color: #4ade80; }
+  .section-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 10px; }
+</style>
 </head>
 <body>
+<div class="container">
 
-    <header>
-        <div class="container">
-            <h1>Fontanería Express</h1>
-            <nav>
-                <ul>
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#servicios">Servicios</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+  <h1>Beneficio por Acción (BPA) — 2010–2025</h1>
+  <p class="subtitle">Iberdrola (IBE.MC) &nbsp;·&nbsp; Endesa (ELE.MC) &nbsp;·&nbsp; Naturgy/Gas Natural (NTGY.MC) &nbsp;|&nbsp; €/acción · datos anuales ajustados</p>
 
-    <section id="inicio" class="hero">
-        <div class="container">
-            <h2>¿Problemas de Agua en Casa?</h2>
-            <p>Soluciones rápidas y profesionales de fontanería para hogares y empresas. ¡Disponibles 24h para emergencias!</p>
-            <a href="#contacto" class="cta-button">¡Llama Ahora!</a>
-        </div>
-    </section>
-
-    <div class="container">
-        
-        <section id="servicios">
-            <h2>Nuestros Servicios</h2>
-            <div class="servicios">
-                <div class="servicio-item">
-                    <h3>Fugas de Agua</h3>
-                    <p>Detección y reparación de fugas en tuberías y grifos.</p>
-                </div>
-                <div class="servicio-item">
-                    <h3>Desatascos</h3>
-                    <p>Solución rápida a atascos en fregaderos, inodoros y tuberías.</p>
-                </div>
-                <div class="servicio-item">
-                    <h3>Instalaciones</h3>
-                    <p>Montaje de sanitarios, grifería, calentadores y termos eléctricos.</p>
-                </div>
-                <div class="servicio-item">
-                    <h3>Urgencias 24h</h3>
-                    <p>Atención inmediata para problemas graves de fontanería a cualquier hora.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contacto" class="contacto">
-            <h2>Contáctanos</h2>
-            <p>Si necesitas un presupuesto o tienes una emergencia, no dudes en ponerte en contacto con nosotros.</p>
-            <ul>
-                <li><strong>Teléfono:</strong> +12 345 678 90</li>
-                <li><strong>Email:</strong> info@fontaneriaexpress.com</li>
-                <li><strong>Dirección:</strong> Calle Tubería 123, Tu Ciudad</li>
-            </ul>
-        </section>
-
+  <!-- KPI cards -->
+  <div class="kpi-row">
+    <div class="kpi kpi-iberia">
+      <div class="kpi-label">🔵 Iberdrola — BPA 2025</div>
+      <div class="kpi-val">€0,87</div>
+      <div class="kpi-sub">+123% vs 2010 (€0,39) · CAGR +5,3%</div>
     </div>
+    <div class="kpi kpi-endesa">
+      <div class="kpi-label">🟠 Endesa — BPA 2025</div>
+      <div class="kpi-val">€2,07</div>
+      <div class="kpi-sub">−47% vs 2010 (€3,91) · volátil</div>
+    </div>
+    <div class="kpi kpi-naturgy">
+      <div class="kpi-label">🟢 Naturgy — BPA 2025</div>
+      <div class="kpi-val">€1,91</div>
+      <div class="kpi-sub">+21% vs 2010 (€1,58) · CAGR +1,2%</div>
+    </div>
+  </div>
 
-    <footer>
-        <p>&copy; 2024 Fontanería Express. Todos los derechos reservados.</p>
-    </footer>
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn active" onclick="setView('chart')">📈 Gráfico</button>
+    <button class="btn" onclick="setView('table')">📋 Tabla de datos</button>
+    <button class="btn" onclick="setView('both')">⊞ Ambos</button>
+  </div>
 
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item" onclick="toggleDataset(0)">
+      <div class="legend-line" style="background:#38bdf8"></div>
+      <span style="color:#38bdf8">Iberdrola</span>
+    </div>
+    <div class="legend-item" onclick="toggleDataset(1)">
+      <div class="legend-line" style="background:#fb923c"></div>
+      <span style="color:#fb923c">Endesa</span>
+    </div>
+    <div class="legend-item" onclick="toggleDataset(2)">
+      <div class="legend-line" style="background:#4ade80"></div>
+      <span style="color:#4ade80">Naturgy</span>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-wrap" id="chartDiv">
+    <canvas id="bpaChart" height="320"></canvas>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap" id="tableDiv" style="display:none">
+    <p class="section-title" style="padding:12px 14px 0">Datos anuales completos</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Año</th>
+          <th>🔵 Iberdrola (€)</th>
+          <th>Var. %</th>
+          <th>🟠 Endesa (€)</th>
+          <th>Var. %</th>
+          <th>🟢 Naturgy (€)</th>
+          <th>Var. %</th>
+          <th>Contexto</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- Notes -->
+  <div class="note">
+    <strong>Fuentes:</strong> Informes anuales auditados (2010–2025) · Cuentas de resultados consolidadas de Iberdrola, Endesa y Naturgy (antes Gas Natural Fenosa hasta 2018).<br>
+    <strong>Notas metodológicas:</strong> BPA básico atribuible a la sociedad dominante. Datos ajustados por splits y ampliaciones de capital. Naturgy rebrandeó desde Gas Natural Fenosa en 2018.
+    El BPA de Endesa en 2015 y 2019 incluye deterioros extraordinarios de activos (nucleares / ciclos combinados). Iberdrola ajustado por <strong>split 3×1 de 2016</strong> (factor 3).
+    Estimaciones 2025 basadas en resultados publicados o guidance de management a marzo 2026.
+  </div>
+
+</div>
+
+<script>
+const years = [2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+
+const ibe = [0.39, 0.35, 0.32, 0.30, 0.34, 0.36, 0.37, 0.44, 0.48, 0.54, 0.53, 0.50, 0.57, 0.65, 0.77, 0.87];
+const end = [3.91, 2.09, 1.92, 1.78, 1.47, 0.72, 1.52, 1.42, 1.34, 0.16, 1.26, 1.76, 2.40, 1.78, 1.78, 2.07];
+const nat = [1.58, 1.45, 1.31, 1.24, 1.05, 1.09, 1.12, 1.29, 0.73, 0.89, 0.89, 1.15, 1.67, 1.88, 1.80, 1.91];
+
+const events = {
+  2011: "Crisis deuda soberana Europa",
+  2012: "Reforma energética España (RD 13/2012)",
+  2013: "Endesa vende negocio Latinoamérica",
+  2015: "Endesa: deterioros activos generación",
+  2016: "Split Iberdrola 3×1 · Gas Natural adquiere CGE",
+  2018: "Rebrand Gas Natural→Naturgy · Impuesto generación",
+  2019: "Endesa deteriora nucleares/carbón",
+  2020: "Impacto COVID-19",
+  2022: "Crisis energética · Impuesto a energéticas",
+  2024: "Fin impuesto energéticas · Récord Iberdrola",
+  2025: "Récord histórico IBE (€6.285M) · END +16% · NTGY récord"
+};
+
+// Build table
+const tbody = document.getElementById('tableBody');
+years.forEach((y, i) => {
+  const tr = document.createElement('tr');
+  const evHtml = events[y]
+    ? `<span class="ev-cell">${events[y]}</span>`
+    : `<span style="color:#1e293b">—</span>`;
+
+  const ibeChg = i > 0 ? ((ibe[i]-ibe[i-1])/ibe[i-1]*100) : null;
+  const endChg = i > 0 ? ((end[i]-end[i-1])/end[i-1]*100) : null;
+  const natChg = i > 0 ? ((nat[i]-nat[i-1])/nat[i-1]*100) : null;
+
+  const fmt = v => v === null ? '—' : `<span style="color:${v>=0?'#4ade80':'#f87171'}">${v>=0?'+':''}${v.toFixed(1)}%</span>`;
+  const hasStar = !!events[y];
+
+  tr.innerHTML = `
+    <td>${y}${hasStar ? '<span class="star">★</span>' : ''}</td>
+    <td class="ibe">${ibe[i].toFixed(2)}</td>
+    <td>${fmt(ibeChg)}</td>
+    <td class="${end[i] < 0.5 ? 'end neg' : 'end'}">${end[i].toFixed(2)}</td>
+    <td>${fmt(endChg)}</td>
+    <td class="${nat[i] < 0.5 ? 'nat neg' : 'nat'}">${nat[i].toFixed(2)}</td>
+    <td>${fmt(natChg)}</td>
+    <td>${evHtml}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// Chart
+const annotationPlugin = {
+  id: 'eventLines',
+  afterDraw(chart) {
+    const {ctx, chartArea: {top, bottom}, scales: {x}} = chart;
+    const keyYears = [2012, 2015, 2018, 2020, 2022];
+    keyYears.forEach(yr => {
+      const idx = years.indexOf(yr);
+      if (idx === -1) return;
+      const xPos = x.getPixelForValue(idx);
+      ctx.save();
+      ctx.beginPath();
+      ctx.setLineDash([5,4]);
+      ctx.strokeStyle = 'rgba(148,163,184,0.18)';
+      ctx.lineWidth = 1;
+      ctx.moveTo(xPos, top);
+      ctx.lineTo(xPos, bottom);
+      ctx.stroke();
+      ctx.restore();
+    });
+  }
+};
+Chart.register(annotationPlugin);
+
+const ctx = document.getElementById('bpaChart').getContext('2d');
+let chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Iberdrola',
+        data: ibe,
+        borderColor: '#38bdf8',
+        backgroundColor: 'rgba(56,189,248,0.07)',
+        borderWidth: 2.5,
+        pointRadius: 4.5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#38bdf8',
+        pointBorderColor: '#0f1623',
+        pointBorderWidth: 1.5,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: 'Endesa',
+        data: end,
+        borderColor: '#fb923c',
+        backgroundColor: 'rgba(251,146,60,0.07)',
+        borderWidth: 2.5,
+        pointRadius: 4.5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#fb923c',
+        pointBorderColor: '#0f1623',
+        pointBorderWidth: 1.5,
+        tension: 0.3,
+        fill: false
+      },
+      {
+        label: 'Naturgy',
+        data: nat,
+        borderColor: '#4ade80',
+        backgroundColor: 'rgba(74,222,128,0.07)',
+        borderWidth: 2.5,
+        pointRadius: 4.5,
+        pointHoverRadius: 7,
+        pointBackgroundColor: '#4ade80',
+        pointBorderColor: '#0f1623',
+        pointBorderWidth: 1.5,
+        tension: 0.3,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1e293b',
+        borderColor: '#475569',
+        borderWidth: 1,
+        titleColor: '#f1f5f9',
+        titleFont: { size: 13, weight: 'bold' },
+        bodyColor: '#cbd5e1',
+        bodyFont: { size: 12 },
+        padding: 14,
+        callbacks: {
+          title: items => {
+            const yr = parseInt(items[0].label);
+            return `${yr}${events[yr] ? '  ·  ' + events[yr] : ''}`;
+          },
+          label: item => {
+            const yr = parseInt(item.label);
+            const i = years.indexOf(yr);
+            const v = item.parsed.y.toFixed(2);
+            if (i > 0) {
+              const prev = item.dataset.data[i-1];
+              const chg = ((item.parsed.y - prev) / prev * 100).toFixed(1);
+              const arrow = chg >= 0 ? '▲' : '▼';
+              return `  ${item.dataset.label}: €${v}  ${arrow} ${chg >= 0 ? '+' : ''}${chg}%`;
+            }
+            return `  ${item.dataset.label}: €${v}`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#64748b',
+          font: { size: 11 },
+          maxRotation: 0
+        },
+        grid: { color: 'rgba(30,41,59,0.8)' },
+        border: { color: '#1e293b' }
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'BPA  (€ / acción)',
+          color: '#475569',
+          font: { size: 11 }
+        },
+        ticks: {
+          color: '#64748b',
+          font: { size: 11 },
+          callback: v => '€' + v.toFixed(2)
+        },
+        grid: { color: 'rgba(30,41,59,0.8)' },
+        border: { color: '#1e293b' },
+        min: 0,
+        suggestedMax: 4.5
+      }
+    }
+  }
+});
+
+function toggleDataset(idx) {
+  const ds = chart.data.datasets[idx];
+  ds.hidden = !ds.hidden;
+  chart.update();
+}
+
+function setView(v) {
+  document.querySelectorAll('.btn').forEach((b, i) => {
+    b.classList.toggle('active', ['chart','table','both'][i] === v);
+  });
+  const cd = document.getElementById('chartDiv');
+  const td = document.getElementById('tableDiv');
+  cd.style.display = v === 'table' ? 'none' : 'block';
+  td.style.display = v === 'chart' ? 'none' : 'block';
+  if (v !== 'table') setTimeout(() => chart.resize(), 50);
+}
+</script>
 </body>
 </html>
