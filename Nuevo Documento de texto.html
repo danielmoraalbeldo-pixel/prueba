@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fontanería Express - Servicios Profesionales</title>
+    <style>
+        /* Estilos CSS - Para darle diseño a la página */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Encabezado y Navegación */
+        header {
+            background-color: #0056b3; /* Azul profesional */
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        nav ul {
+            margin: 10px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sección Hero (Principal con imagen o llamada a la acción) */
+        .hero {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #ffc107; /* Amarillo para llamar la atención */
+            color: #333;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        .cta-button:hover {
+            background-color: #e0a800;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 40px 0;
+        }
+
+        /* Sección de Servicios */
+        .servicios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .servicio-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .servicio-item h3 {
+            color: #0056b3;
+        }
+
+        /* Sección de Contacto */
+        .contacto {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .contacto h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+
+        /* Pie de página */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <h1>Fontanería Express</h1>
+            <nav>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="container">
+            <h2>¿Problemas de Agua en Casa?</h2>
+            <p>Soluciones rápidas y profesionales de fontanería para hogares y empresas. ¡Disponibles 24h para emergencias!</p>
+            <a href="#contacto" class="cta-button">¡Llama Ahora!</a>
+        </div>
+    </section>
+
+    <div class="container">
+        
+        <section id="servicios">
+            <h2>Nuestros Servicios</h2>
+            <div class="servicios">
+                <div class="servicio-item">
+                    <h3>Fugas de Agua</h3>
+                    <p>Detección y reparación de fugas en tuberías y grifos.</p>
+                </div>
+                <div class="servicio-item">
+                    <h3>Desatascos</h3>
+                    <p>Solución rápida a atascos en fregaderos, inodoros y tuberías.</p>
+                </div>
+                <div class="servicio-item">
+                    <h3>Instalaciones</h3>
+                    <p>Montaje de sanitarios, grifería, calentadores y termos eléctricos.</p>
+                </div>
+                <div class="servicio-item">
+                    <h3>Urgencias 24h</h3>
+                    <p>Atención inmediata para problemas graves de fontanería a cualquier hora.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="contacto">
+            <h2>Contáctanos</h2>
+            <p>Si necesitas un presupuesto o tienes una emergencia, no dudes en ponerte en contacto con nosotros.</p>
+            <ul>
+                <li><strong>Teléfono:</strong> +12 345 678 90</li>
+                <li><strong>Email:</strong> info@fontaneriaexpress.com</li>
+                <li><strong>Dirección:</strong> Calle Tubería 123, Tu Ciudad</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Fontanería Express. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
